@@ -14,7 +14,6 @@ import javax.json.JsonObject;
 import javax.json.JsonString;
 
 import model.Options;
-import model.YGOCard;
 import model.YGODeck;
 import view.ErrorDialog;
 import view.GraphicalConsole;
@@ -35,36 +34,6 @@ public class DraftExporter {
 		jArrBuilder.add(jStr);
 		System.out.println(jArrBuilder.build());
 	}
-
-//	public static void export() throws IOException {
-//		try (Stream<Path> paths = Files.walk(Paths.get(draftFolder.getCanonicalPath()))) {
-//			paths.filter(Files::isRegularFile).filter(path -> {
-//				boolean filter = true;
-//				for (String s : exporter.getJsonArray("whitelist").getValuesAs(JsonString::getString)) {
-//					filter = filter && path.toString().contains(s);
-//				}
-//				for (String s : exporter.getJsonArray("blacklist").getValuesAs(JsonString::getString)) {
-//					filter = filter && !path.toString().contains(s);
-//				}
-//				return filter;
-//			}).forEach(path -> {
-//				try {
-//					File out = new File(deckFolder + "\\" + exporter.getString("prefix") + path.toFile().getName());
-//					GraphicalConsole.add("exported : " + path.toFile() + "\nto\n" + out + "\n");
-//
-//					DeckWriter.writeLimitedTo(out, ConverterYDKToCardslist.convert(path.toFile()));
-//				} catch (IOException e) {
-//					ErrorDialog ed = new ErrorDialog(e.getMessage());
-//					ed.showDialog();
-//				}
-//			});
-//			if (GraphicalConsole.getMessage() != "") {
-//				GraphicalConsole.showDialog();
-//				GraphicalConsole.flush();
-//			} else
-//				GraphicalConsole.showDialog("Nothing to export...");
-//		}
-//	}
 
 	public static void exportAsMultipleWhitelist() throws IOException {
 		try (Stream<Path> paths = Files.walk(Paths.get(draftFolder.getCanonicalPath()))) {
@@ -115,32 +84,18 @@ public class DraftExporter {
 				FileMerger.mergeTo(draftExportFile, files);
 				YGODeck cards = ConverterYDKToYGODeck.convert(draftExportFile);
 
-				if (Options.compareWithAllCards)
-					DeckWriter.writeCards(compareAndTrim(
-							ConverterYDKToYGODeck.convert(new File(Options.paths.getString("allcards"))), cards));
-				else
-					DeckWriter.writeCards(cards);
+				DeckWriter.writeCards(cards);
 
 				ConverterYGODeckToWhitelist.convert(cards);
 
 				if (Options.displayInfos)
-					GraphicalConsole.showDialog("Merged files in: " + draftFolder + "\nto "
-							+ Options.paths.getString("allcards") + "\n\nand\n\n"
-							+ "Converted 'allcards' clean and trimmed to 3 cards max to 'cards'\n" + "\nand\n\n"
-							+ "Generated " + Options.whitelistName + " using 'cards' /nto: "
+					GraphicalConsole.showDialog("- Merged files in: " + draftFolder + "\nto " + draftExportFile + "\n"
+							+ "- Converted 'draft export' cleaned up and trimmed to 3 cards max to 'cards'\n"
+							+ "- Generated " + Options.whitelistName + " using 'cards' /nto: "
 							+ Options.paths.getString("whitelist folder"));
 			} else
 				GraphicalConsole.showDialog("Nothing to export...");
 		}
-	}
-
-	public static YGODeck compareAndTrim(YGODeck d1, YGODeck d2) {
-		for (YGOCard card : d1.keySet()) {
-			if (d2.containsKey(card)) {
-				d1.put(card, d1.get(card) - d2.get(card));
-			}
-		}
-		return d1;
 	}
 
 	public static void clearExports() throws IOException {

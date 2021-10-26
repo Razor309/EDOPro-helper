@@ -1,5 +1,5 @@
 {
-  "display infos" : false,
+  "display infos" : true,
   "compare with allcards" : false,
   "maindeckkeyword" : "#main",
   "extradeckkeyword" : "#extra",
@@ -7,6 +7,7 @@
   "whitelistname" : "testWhitelist (allCards).conf",
   "paths" : {
     "allcards" : "./resources/cards/allcards.ydk",
+    "cards" : "./resources/cards/cards.ydk",
     "draft export" : "./resources/cards/draft export.ydk",
     "banlist" : "C:/Users/damoe/Dropbox/Vollidioten/Yu-Gi-Oh/banlist.txt",
     "whitelist folder" : "C:/ProjectIgnis/lflists test/",
