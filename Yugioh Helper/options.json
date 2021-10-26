@@ -1,0 +1,24 @@
+{
+  "display infos" : false,
+  "compare with allcards" : false,
+  "maindeckkeyword" : "#main",
+  "extradeckkeyword" : "#extra",
+  "sidedeckkeyword" : "!side",
+  "whitelistname" : "testWhitelist (allCards).conf",
+  "paths" : {
+    "allcards" : "./resources/cards/allcards.ydk",
+    "draft export" : "./resources/cards/draft export.ydk",
+    "banlist" : "C:/Users/damoe/Dropbox/Vollidioten/Yu-Gi-Oh/banlist.txt",
+    "whitelist folder" : "C:/ProjectIgnis/lflists test/",
+    "deck folder" : "C:/ProjectIgnis/deck test/",
+    "draft folder" : "./resources/drafts/"
+  },
+  "draft exporter" : {
+    "prefix" : "zzz ",
+    "keyword" : "Draft",
+    "generated decks" : [ "" ],
+    "generated whitelists" : [ ],
+    "whitelist" : [ ],
+    "blacklist" : [ "Structure", "Starter" ]
+  }
+}
