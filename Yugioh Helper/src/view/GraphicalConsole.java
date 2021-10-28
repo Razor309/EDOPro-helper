@@ -7,7 +7,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class GraphicalConsole {
-	private static String message = "";
+	private static String message = null;
 
 	public static String getMessage() {
 		return message;
@@ -17,14 +17,14 @@ public class GraphicalConsole {
 	}
 
 	public static void add(Object m) {
-		if (message == "")
+		if (message == null)
 			message = "" + m;
 		else
 			message = message + "\n" + m;
 	}
 
 	public static void flush() {
-		message = "";
+		message = null;
 	}
 
 	public static void showDialog() {

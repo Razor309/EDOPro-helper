@@ -1,33 +1,18 @@
 package model;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import javax.json.bind.annotation.JsonbProperty;
 
 public class Options {
-	public static JsonObject rootObject, paths, draftExporter;
-	public static String mainDeckKeyword, extraDeckKeyword, sideDeckKeyword, whitelistName;
-	public static boolean displayInfos, compareWithAllCards;
+	public boolean displayInfos, compareWithAllCards;
+	public String whitelistName;
+	public HashMap<String, String> paths, keywords;
 
-	private Options() {
+	@JsonbProperty("draft exporter extensions")
+	public HashMap<String, String> draftExporterExtensions;
 
-	}
-
-	public static void setRoot(File in) throws FileNotFoundException {
-		JsonReader optionsReader = Json.createReader(new FileReader(in));
-		rootObject = optionsReader.readObject();
-		paths = rootObject.getJsonObject("paths");
-		draftExporter = rootObject.getJsonObject("draft exporter");
-		mainDeckKeyword = rootObject.getString("maindeckkeyword");
-		extraDeckKeyword = rootObject.getString("extradeckkeyword");
-		sideDeckKeyword = rootObject.getString("sidedeckkeyword");
-		whitelistName = rootObject.getString("whitelistname");
-		displayInfos = rootObject.getBoolean("display infos");
-		compareWithAllCards = rootObject.getBoolean("compare with allcards");
-		optionsReader.close();
-	}
+	@JsonbProperty("draft exporter filter")
+	public HashMap<String, ArrayList<String>> draftExporterFilter;
 }

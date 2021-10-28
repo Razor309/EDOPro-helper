@@ -1,37 +1,68 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.io.File;
 
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
-public class FileChooserWindow extends JFrame {
-
-	private static final long serialVersionUID = 5915941501042516096L;
-	private JPanel contentPane;
-
-	public FileChooserWindow() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
+public class FileChooserWindow {
+	private FileChooserWindow() {
 	}
 
-	public File getFileDirectory() {
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Specify a file to save");
+	public static File singleFolderPick() {
+		return singleFolderPick(new File("."));
+	}
 
-		int userSelection = fileChooser.showSaveDialog(this);
+	public static File singleFolderPick(File here) {
+		JFileChooser fc = new JFileChooser(here);
+
+		fc.setDialogTitle("Specify a file to save");
+		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+		int userSelection = fc.showOpenDialog(fc);
 
 		if (userSelection == JFileChooser.APPROVE_OPTION) {
-			File fileToSave = fileChooser.getSelectedFile();
-			System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+			File fileToSave = fc.getSelectedFile();
+			System.out.println(fileToSave.toString());
 			return fileToSave;
+		}
+		return null;
+	}
+
+	public static File singleFilePick() {
+		return singleFilePick(new File("."));
+	}
+
+	public static File singleFilePick(File here) {
+		JFileChooser fc = new JFileChooser(here);
+
+		fc.setDialogTitle("Specify a file to save");
+
+		int userSelection = fc.showOpenDialog(fc);
+
+		if (userSelection == JFileChooser.APPROVE_OPTION) {
+			File fileToSave = fc.getSelectedFile();
+			System.out.println(fileToSave.toString());
+			return fileToSave;
+		}
+		return null;
+	}
+
+	public static File[] multiFilePick() {
+		return multiFilePick(new File("."));
+	}
+
+	public static File[] multiFilePick(File here) {
+		JFileChooser fc = new JFileChooser(here);
+
+		fc.setDialogTitle("Specify a file to save");
+		fc.setMultiSelectionEnabled(true);
+
+		int userSelection = fc.showOpenDialog(fc);
+
+		if (userSelection == JFileChooser.APPROVE_OPTION) {
+			File[] filesToSave = fc.getSelectedFiles();
+			System.out.println(filesToSave.toString());
+			return filesToSave;
 		}
 		return null;
 	}

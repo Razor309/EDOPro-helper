@@ -7,6 +7,7 @@ import java.util.Set;
 
 public class YGODeck extends HashMap<YGOCard, Integer> {
 	private File source;
+	public static final String MAIN = "#main", EXTRA = "#extra", SIDE = "!side";
 
 	/**
 	 * 

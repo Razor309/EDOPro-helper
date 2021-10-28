@@ -12,8 +12,9 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
-import controller.DraftExporter;
-import model.Options;
+import controller.DeckHandler;
+import controller.OptionsHandler;
+import controller.WhitelistGenerator;
 import model.PressableButton;
 
 public class Mainmenu extends JFrame {
@@ -28,12 +29,13 @@ public class Mainmenu extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Options.setRoot(new File("./options.json"));
+					OptionsHandler.deserializeOption(new File("./options.json"));
 					Mainmenu frame = new Mainmenu();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					ErrorDialog ed = new ErrorDialog(e.getMessage());
 					ed.showDialog();
+					e.printStackTrace();
 					System.exit(0);
 				}
 			}
@@ -56,7 +58,13 @@ public class Mainmenu extends JFrame {
 		theUsualBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					DraftExporter.exportAsMergedDeck();
+					DeckHandler.generateDraftExport();
+					DeckHandler.generateCards();
+					WhitelistGenerator.generateMain();
+					if (GraphicalConsole.getMessage() != null) {
+						GraphicalConsole.showDialog();
+						GraphicalConsole.flush();
+					}
 				} catch (IOException ioExc) {
 					ioExc.printStackTrace();
 					ErrorDialog ed = new ErrorDialog(ioExc.getMessage());
@@ -67,68 +75,42 @@ public class Mainmenu extends JFrame {
 
 		getContentPane().add(theUsualBtn);
 
-		PressableButton testBtn = new PressableButton("Test");
-		testBtn.setLayoutDarkGray();
+		PressableButton generateTrimmedDeckBtn = new PressableButton("Generate Trimmed Deck");
+		generateTrimmedDeckBtn.setLayoutDarkGray();
 
-		testBtn.addActionListener(new ActionListener() {
+		generateTrimmedDeckBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DraftExporter.test();
+				try {
+					DeckHandler.generateTrimmedDeck();
+					if (GraphicalConsole.getMessage() != null) {
+						GraphicalConsole.showDialog();
+						GraphicalConsole.flush();
+					}
+				} catch (IOException ioExc) {
+					ioExc.printStackTrace();
+					ErrorDialog ed = new ErrorDialog(ioExc.getMessage());
+					ed.showDialog();
+				}
 			}
 		});
 
-//		getContentPane().add(testBtn);
-//
-//		PressableButton exportDraftsBtn = new PressableButton("Drafts to Decks");
-//		exportDraftsBtn.setLayoutDarkGray();
-//
-//		exportDraftsBtn.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				try {
-//					DraftExporter.export();
-//				} catch (IOException ioExc) {
-//					ErrorDialog ed = new ErrorDialog(ioExc.getMessage());
-//					ed.showDialog();
-//				}
-//			}
-//		});
-//
-//		getContentPane().add(exportDraftsBtn);
-//
-//		PressableButton exportDraftsAsWhitelistsBtn = new PressableButton("Drafts to Whitelists");
-//		exportDraftsAsWhitelistsBtn.setLayoutDarkGray();
-//		exportDraftsAsWhitelistsBtn.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				try {
-//					DraftExporter.export();
-//				} catch (IOException ioExc) {
-//					ErrorDialog ed = new ErrorDialog(ioExc.getMessage());
-//					ed.showDialog();
-//				}
-//			}
-//		});
-//
-//		getContentPane().add(exportDraftsAsWhitelistsBtn);
-//
-//		PressableButton clearExportsBtn = new PressableButton("Clear Exports");
-//		clearExportsBtn.setLayoutDarkGray();
-//		clearExportsBtn.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				try {
-//					DraftExporter.clearExports();
-//				} catch (IOException ioExc) {
-//					ErrorDialog ed = new ErrorDialog(ioExc.getMessage());
-//					ed.showDialog();
-//				}
-//			}
-//		});
-//
-//		getContentPane().add(clearExportsBtn);
+		getContentPane().add(generateTrimmedDeckBtn);
+
+		PressableButton optionsBtn = new PressableButton("Options");
+		optionsBtn.setLayoutDarkGray();
+
+		optionsBtn.addActionListener(e -> {
+			OptionsGUI opgui = new OptionsGUI();
+			opgui.setVisible(true);
+		});
+
+		getContentPane().add(optionsBtn);
 
 		PressableButton exitBtn = new PressableButton("Exit");
 		exitBtn.setLayoutDarkGray();
 		exitBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
 				System.exit(0);
 			}
 		});
