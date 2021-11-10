@@ -5,8 +5,6 @@ import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -55,21 +53,19 @@ public class Mainmenu extends JFrame {
 		PressableButton theUsualBtn = new PressableButton("Business as usual");
 		theUsualBtn.setLayoutDarkGray();
 
-		theUsualBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					DeckHandler.generateDraftExport();
-					DeckHandler.generateCards();
-					WhitelistGenerator.generateMain();
-					if (GraphicalConsole.getMessage() != null) {
-						GraphicalConsole.showDialog();
-						GraphicalConsole.flush();
-					}
-				} catch (IOException ioExc) {
-					ioExc.printStackTrace();
-					ErrorDialog ed = new ErrorDialog(ioExc.getMessage());
-					ed.showDialog();
+		theUsualBtn.addActionListener(e -> {
+			try {
+				DeckHandler.generateDraftExport();
+				DeckHandler.generateCards();
+				WhitelistGenerator.generateMain();
+				if (GraphicalConsole.getMessage() != null) {
+					GraphicalConsole.showDialog();
+					GraphicalConsole.flush();
 				}
+			} catch (IOException ioExc) {
+				ioExc.printStackTrace();
+				ErrorDialog ed = new ErrorDialog(ioExc.getMessage());
+				ed.showDialog();
 			}
 		});
 
@@ -78,19 +74,17 @@ public class Mainmenu extends JFrame {
 		PressableButton generateTrimmedDeckBtn = new PressableButton("Generate Trimmed Deck");
 		generateTrimmedDeckBtn.setLayoutDarkGray();
 
-		generateTrimmedDeckBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					DeckHandler.generateTrimmedDeck();
-					if (GraphicalConsole.getMessage() != null) {
-						GraphicalConsole.showDialog();
-						GraphicalConsole.flush();
-					}
-				} catch (IOException ioExc) {
-					ioExc.printStackTrace();
-					ErrorDialog ed = new ErrorDialog(ioExc.getMessage());
-					ed.showDialog();
+		generateTrimmedDeckBtn.addActionListener(e -> {
+			try {
+				DeckHandler.generateTrimmedDeck();
+				if (GraphicalConsole.getMessage() != null) {
+					GraphicalConsole.showDialog();
+					GraphicalConsole.flush();
 				}
+			} catch (IOException ioExc) {
+				ioExc.printStackTrace();
+				ErrorDialog ed = new ErrorDialog(ioExc.getMessage());
+				ed.showDialog();
 			}
 		});
 
@@ -108,12 +102,7 @@ public class Mainmenu extends JFrame {
 
 		PressableButton exitBtn = new PressableButton("Exit");
 		exitBtn.setLayoutDarkGray();
-		exitBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				System.exit(0);
-			}
-		});
+		exitBtn.addActionListener(e -> System.exit(0));
 
 		getContentPane().add(exitBtn);
 	}
