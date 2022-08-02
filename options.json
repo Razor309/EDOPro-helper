@@ -1,0 +1,29 @@
+
+{
+    "displayInfos": true,
+    "paths": {
+        "banlist": "C:/Users/damoe/Dropbox/Vollidioten/Yu-Gi-Oh/banlist.txt",
+        "whitelist folder": "C:\\Program Files\\ProjectIgnis\\lflists\\",
+        "draft folder": "./resources/drafts/"
+    },
+    "general whitelist name": "general.conf",
+    "goodcards whitelist name": "goodcards.conf",
+    "trimmed goodcards whitelist name": "trimmed goodcards.conf",
+    "draft exporter extensions": {
+        "prefix": "--",
+        "suffix": "--"
+    },
+    "draft exporter filter": {
+        "generated decks": [
+        ],
+        "generated whitelists": [
+        ],
+        "blacklist": [
+            "Structure",
+            "Starter"
+        ],
+        "whitelist": [
+            "Draft"
+        ]
+    }
+}

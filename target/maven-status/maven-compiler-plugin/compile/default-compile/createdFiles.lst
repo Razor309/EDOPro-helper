@@ -1,0 +1,14 @@
+view\ErrorDialog.class
+model\Options.class
+controller\WhitelistGenerator.class
+controller\DeckHandler.class
+controller\FileMerger.class
+view\FileChooserWindow.class
+model\YGODeck.class
+view\Mainmenu.class
+model\YGOCard.class
+view\GraphicalConsole.class
+view\Mainmenu$1.class
+view\OptionsGUI.class
+controller\OptionsHandler.class
+model\PressableButton.class
