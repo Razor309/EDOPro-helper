@@ -9,6 +9,9 @@ public class Options {
 	@JsonbProperty("display infos")
 	public boolean displayInfos;
 
+	@JsonbProperty("apply banlist")
+	public boolean applyBanlist;
+
 	@JsonbProperty("general whitelist name")
 	public String generalWhitelistName;
 

@@ -22,7 +22,7 @@ public class FileChooserWindow {
 
 		if (userSelection == JFileChooser.APPROVE_OPTION) {
 			File fileToSave = fc.getSelectedFile();
-			System.out.println(fileToSave.toString());
+			
 			return fileToSave;
 		}
 		return null;
@@ -41,7 +41,7 @@ public class FileChooserWindow {
 
 		if (userSelection == JFileChooser.APPROVE_OPTION) {
 			File fileToSave = fc.getSelectedFile();
-			System.out.println(fileToSave.toString());
+			
 			return fileToSave;
 		}
 		return null;
@@ -61,7 +61,7 @@ public class FileChooserWindow {
 
 		if (userSelection == JFileChooser.APPROVE_OPTION) {
 			File[] filesToSave = fc.getSelectedFiles();
-			System.out.println(filesToSave.toString());
+			
 			return filesToSave;
 		}
 		return null;

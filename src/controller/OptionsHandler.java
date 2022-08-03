@@ -22,8 +22,6 @@ public class OptionsHandler {
 		source = in;
 		FileReader fr = new FileReader(source);
 		options = JsonbBuilder.create().fromJson(fr, Options.class);
-		String str = JsonbBuilder.create().toJson(options);
-		System.out.println(str);
 		fr.close();
 	}
 

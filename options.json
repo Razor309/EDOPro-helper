@@ -1,14 +1,7 @@
 
 {
-    "displayInfos": true,
-    "paths": {
-        "banlist": "C:/Users/damoe/Dropbox/Vollidioten/Yu-Gi-Oh/banlist.txt",
-        "whitelist folder": "C:\\Program Files\\ProjectIgnis\\lflists\\",
-        "draft folder": "./resources/drafts/"
-    },
-    "general whitelist name": "general.conf",
-    "goodcards whitelist name": "goodcards.conf",
-    "trimmed goodcards whitelist name": "trimmed goodcards.conf",
+    "apply banlist": true,
+    "display infos": false,
     "draft exporter extensions": {
         "prefix": "--",
         "suffix": "--"
@@ -25,5 +18,14 @@
         "whitelist": [
             "Draft"
         ]
-    }
+    },
+    "general whitelist name": "general.conf",
+    "goodcards whitelist name": "goodcards.conf",
+    "paths": {
+        "goodcards": "C:\\Users\\damoe\\OneDrive - bwedu\\Yugioh Helper\\resources\\goodcards.ydk",
+        "banlist": "C:\\Users\\damoe\\OneDrive\\Shared\\Yu-Gi-Oh\\Banlist.txt",
+        "whitelist folder": "C:\\Program Files\\ProjectIgnis\\lflists\\",
+        "draft folder": "C:\\Users\\damoe\\OneDrive - bwedu\\Yugioh Helper\\resources\\drafts"
+    },
+    "trimmed goodcards whitelist name": "trimmed goodcards.conf"
 }

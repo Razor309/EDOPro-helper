@@ -16,6 +16,7 @@ import view.GraphicalConsole;
 
 public class DeckHandler {
 	public final static Path draftFolder = Paths.get(OptionsHandler.options.paths.get("draft folder"));
+	public final static Path goodcardsPath = Paths.get(OptionsHandler.options.paths.get("goodcards"));
 	private static YGODeck allcardsDeck;
 	private static YGODeck goodcardsDeck;
 	private static boolean generated;
@@ -50,7 +51,7 @@ public class DeckHandler {
 					Path out = Paths.get(draftFolder + "\\" + OptionsHandler.options.draftExporterExtensions.get("prefix")
 							+ path.getFileName() + ".conf" + OptionsHandler.options.draftExporterExtensions.get("suffix"));
 					GraphicalConsole.add("Exported : " + path.toFile() + "\nas whitelist to\n" + out + "\n");
-					WhitelistGenerator.generateTo(out, DeckHandler.importFromFile(path));
+					WhitelistGenerator.generateTo(out, DeckHandler.importFromFile(path), false);
 					generated = true;
 				} catch (Exception e) {
 					ErrorDialog ed = new ErrorDialog(e.getMessage());
@@ -92,22 +93,22 @@ public class DeckHandler {
 
 	public static YGODeck getGoodcardsDeck() throws IOException {
 		if (goodcardsDeck == null)
-			goodcardsDeck = importFromDir(draftFolder);
+			goodcardsDeck = importFromFile(goodcardsPath);
 		return goodcardsDeck;
 	}
 
 	public static YGODeck importFromDir(Path dir) throws IOException {
-		System.out.println(dir.toFile().getCanonicalFile());
+		
 		YGODeck deck = new YGODeck(dir);
 		Stream<Path> ydkPathStream = getYdkPaths(dir);
 		if (ydkPathStream == null) {
 			new ErrorDialog("No items in " + dir).showDialog();
 		} else {
-			System.out.println(ydkPathStream);
+			
 		}
 		assert ydkPathStream != null;
 		ydkPathStream.forEach(path -> {
-			System.out.println(path);
+			
 			try {
 				getCardCodes(Files.lines(path))
 						.forEach(cardCode -> {
