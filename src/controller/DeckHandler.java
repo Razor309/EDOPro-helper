@@ -62,7 +62,7 @@ public class DeckHandler {
 				GraphicalConsole.add("There was nothing to generate...");
 		}
 
-	}
+}
 
 	private static Stream<Path> getYdkPaths(Path dir) throws IOException {
 		return Files.walk(dir)
@@ -81,7 +81,7 @@ public class DeckHandler {
 	}
 
 	public static YGODeck getIntersectingDeck(YGODeck d1, YGODeck d2) {
-		Map<Integer, Integer> map = d1.keySet().stream().filter(d2::containsKey).collect(Collectors.toMap(k -> k, d1::get));
+		Map<Integer, Integer> map = d1.keySet().stream().filter(d2::containsKey).collect(Collectors.toMap(k -> k, d2::get));
 		return YGODeck.getCastedInstance((HashMap<Integer, Integer>) map);
 	}
 
@@ -103,8 +103,6 @@ public class DeckHandler {
 		Stream<Path> ydkPathStream = getYdkPaths(dir);
 		if (ydkPathStream == null) {
 			new ErrorDialog("No items in " + dir).showDialog();
-		} else {
-			
 		}
 		assert ydkPathStream != null;
 		ydkPathStream.forEach(path -> {
