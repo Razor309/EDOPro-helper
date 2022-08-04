@@ -1,13 +1,18 @@
 package controller;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
+import model.Options;
 import model.YGODeck;
 import view.ErrorDialog;
 import view.GraphicalConsole;
@@ -44,6 +49,7 @@ public class WhitelistGenerator {
 
 	public static void generateDraftWhitelists() throws IOException {
 		AtomicBoolean generated = new AtomicBoolean(false);
+		HashSet<String> generatedWhitelists = OptionsHandler.options.draftExporterFilter.get("generated whitelists");
 		try (Stream<Path> paths = Files.walk(draftFolder)) {
 			paths.filter(Files::isRegularFile).filter(path -> {
 				boolean whitelisted = true;
@@ -70,6 +76,7 @@ public class WhitelistGenerator {
 					Path out = Paths.get( WHITELIST_FOLDER + "\\" + whitelistName + ".conf");
 					WhitelistGenerator.generateTo(out, DeckHandler.importFromFile(path), false, out.toString(), whitelistName);
 					generated.set(true);
+					generatedWhitelists.add(out.toString());
 				} catch (Exception e) {
 					ErrorDialog ed = new ErrorDialog(e.getMessage());
 					ed.showDialog();
@@ -77,7 +84,20 @@ public class WhitelistGenerator {
 			});
 			if (!generated.get())
 				GraphicalConsole.add("There was nothing to generate...");
+			else
+				OptionsHandler.serializeOptions();
 		}
+	}
+
+	public static void deleteDraftWhitelists() {
+		OptionsHandler.options.draftExporterFilter.get("generated whitelists").forEach(path -> {
+			try {
+				Files.delete(Paths.get(path));
+				GraphicalConsole.add("Deleted: " + path);
+			} catch (IOException e) {
+				new ErrorDialog(e.getMessage()).showDialog();
+			}
+		});
 	}
 
 	public static void generateTo(Path out, YGODeck deck, boolean withBanlist) throws IOException {

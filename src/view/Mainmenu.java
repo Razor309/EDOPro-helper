@@ -54,7 +54,7 @@ public class Mainmenu extends JFrame {
 				WhitelistGenerator.generateGoodcards();
 				WhitelistGenerator.generateTrimmedGoodcards();
 				if (GraphicalConsole.getMessage() != null) {
-					GraphicalConsole.showDialog();
+					if (OptionsHandler.options.displayInfos) GraphicalConsole.showDialog();
 					GraphicalConsole.flush();
 				}
 			} catch (IOException ioExc) {
@@ -73,7 +73,7 @@ public class Mainmenu extends JFrame {
 			try {
 				WhitelistGenerator.generateDraftWhitelists();
 				if (GraphicalConsole.getMessage() != null) {
-					GraphicalConsole.showDialog();
+					if (OptionsHandler.options.displayInfos) GraphicalConsole.showDialog();
 					GraphicalConsole.flush();
 				}
 			} catch (IOException ioExc) {
@@ -84,6 +84,19 @@ public class Mainmenu extends JFrame {
 		});
 
 		getContentPane().add(generateDraftWhitelistBtn);
+
+		PressableButton deleteGeneratedDraftWhitelists = new PressableButton("Delete draft whitelists");
+		deleteGeneratedDraftWhitelists.setLayoutDarkGray();
+
+		deleteGeneratedDraftWhitelists.addActionListener(e -> {
+			WhitelistGenerator.deleteDraftWhitelists();
+			if (GraphicalConsole.getMessage() != null) {
+				if (OptionsHandler.options.displayInfos) GraphicalConsole.showDialog();
+				GraphicalConsole.flush();
+			}
+		});
+
+		getContentPane().add(deleteGeneratedDraftWhitelists);
 
 		PressableButton optionsBtn = new PressableButton("Options");
 		optionsBtn.setLayoutDarkGray();

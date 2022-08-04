@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import javax.json.bind.annotation.JsonbProperty;
 
@@ -27,5 +28,5 @@ public class Options {
 	public HashMap<String, String> draftExporterExtensions;
 
 	@JsonbProperty("draft exporter filter")
-	public HashMap<String, ArrayList<String>> draftExporterFilter;
+	public HashMap<String, HashSet<String>> draftExporterFilter;
 }
