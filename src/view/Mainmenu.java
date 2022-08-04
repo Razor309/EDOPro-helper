@@ -20,7 +20,7 @@ public class Mainmenu extends JFrame {
 	private static final int WINDOW_HEIGHT = 800;
 	private static final int WINDOW_WIDTH = 800;
 
-	public static void main(String[] args) {
+	public static void execute() {
 		EventQueue.invokeLater(() -> {
 			try {
 				OptionsHandler.deserializeOption(new File("./options.json"));
@@ -65,6 +65,25 @@ public class Mainmenu extends JFrame {
 		});
 
 		getContentPane().add(theUsualBtn);
+
+		PressableButton generateDraftWhitelistBtn = new PressableButton("Generate draft whitelists");
+		generateDraftWhitelistBtn.setLayoutDarkGray();
+
+		generateDraftWhitelistBtn.addActionListener(e -> {
+			try {
+				WhitelistGenerator.generateDraftWhitelists();
+				if (GraphicalConsole.getMessage() != null) {
+					GraphicalConsole.showDialog();
+					GraphicalConsole.flush();
+				}
+			} catch (IOException ioExc) {
+				ioExc.printStackTrace();
+				ErrorDialog ed = new ErrorDialog(ioExc.getMessage());
+				ed.showDialog();
+			}
+		});
+
+		getContentPane().add(generateDraftWhitelistBtn);
 
 		PressableButton optionsBtn = new PressableButton("Options");
 		optionsBtn.setLayoutDarkGray();

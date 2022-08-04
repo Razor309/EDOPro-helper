@@ -5,46 +5,92 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Stream;
 
 import model.YGODeck;
 import view.ErrorDialog;
 import view.GraphicalConsole;
 
+import static controller.DeckHandler.draftFolder;
+
 public class WhitelistGenerator {
+	private static final String WHITELIST_FOLDER = OptionsHandler.options.paths.get("whitelist folder");
+
 	private WhitelistGenerator() {
 
 	}
 
 	public static void generateGeneral() throws IOException {
 		generateTo(
-				Paths.get(OptionsHandler.options.paths.get("whitelist folder") + OptionsHandler.options.generalWhitelistName),
+				Paths.get(WHITELIST_FOLDER + OptionsHandler.options.generalWhitelistName),
 				DeckHandler.getAllcardsDeck(),
 				OptionsHandler.options.applyBanlist);
 	}
 
 	public static void generateGoodcards() throws IOException {
 		generateTo(
-				Paths.get(OptionsHandler.options.paths.get("whitelist folder") + OptionsHandler.options.goodcardsWhitelistName),
+				Paths.get(WHITELIST_FOLDER + OptionsHandler.options.goodcardsWhitelistName),
 				DeckHandler.getGoodcardsDeck(),
 				false);
 	}
 
 	public static void generateTrimmedGoodcards() throws IOException {
 		generateTo(
-				Paths.get(OptionsHandler.options.paths.get("whitelist folder") + OptionsHandler.options.trimmedGoodcardsWhitelistName),
+				Paths.get(WHITELIST_FOLDER + OptionsHandler.options.trimmedGoodcardsWhitelistName),
 				DeckHandler.getIntersectingDeck(DeckHandler.getGoodcardsDeck(), DeckHandler.getAllcardsDeck()),
 				OptionsHandler.options.applyBanlist);
 	}
 
+	public static void generateDraftWhitelists() throws IOException {
+		AtomicBoolean generated = new AtomicBoolean(false);
+		try (Stream<Path> paths = Files.walk(draftFolder)) {
+			paths.filter(Files::isRegularFile).filter(path -> {
+				boolean whitelisted = true;
+				if (OptionsHandler.options.draftExporterFilter.get("whitelist").size() != 0) {
+					// Check if file is whitelisted
+					for (String s : OptionsHandler.options.draftExporterFilter.get("whitelist")) {
+						whitelisted = path.toString().contains(s);
+					}
+				}
+				// if the file is not in the non-empty whitelist return false
+				if (!whitelisted)
+					return false;
+				// If there was no whitelist or the file is whitelisted -> Check if file is
+				// blacklisted
+				for (String s : OptionsHandler.options.draftExporterFilter.get("blacklist")) {
+					if (path.toString().contains(s))
+						return false;
+				}
+				return true;
+			}).forEach(path -> {
+				try {
+					String whitelistName = OptionsHandler.options.draftExporterExtensions.get("prefix")
+							+ path.getFileName().toString().split("\\.")[0] + OptionsHandler.options.draftExporterExtensions.get("suffix");
+					Path out = Paths.get( WHITELIST_FOLDER + "\\" + whitelistName + ".conf");
+					WhitelistGenerator.generateTo(out, DeckHandler.importFromFile(path), false, out.toString(), whitelistName);
+					generated.set(true);
+				} catch (Exception e) {
+					ErrorDialog ed = new ErrorDialog(e.getMessage());
+					ed.showDialog();
+				}
+			});
+			if (!generated.get())
+				GraphicalConsole.add("There was nothing to generate...");
+		}
+	}
+
 	public static void generateTo(Path out, YGODeck deck, boolean withBanlist) throws IOException {
+		String convertedFrom = deck.getSource() != null ? deck.getSource().toAbsolutePath().toString() : "unknown";
+		String whitelistName = out.getFileName().toString().substring(0, out.getFileName().toString().length() - 5);
+		generateTo(out, deck, withBanlist, convertedFrom, whitelistName);
+	}
+
+	public static void generateTo(Path out, YGODeck deck, boolean withBanlist, String convertedFrom, String whitelistName) throws IOException {
 		BufferedWriter whitelistWriter = Files.newBufferedWriter(out);
-		whitelistWriter.write("#whitelist converted from " + (deck.getSource() != null ? deck.getSource().toAbsolutePath() : "unknown")
-				+ "\n!" + out.getFileName().toString().substring(0, out.getFileName().toString().length() - 5)
-				+ "\n$whitelist\n");
+		whitelistWriter.write("Whitelist converted from: " + convertedFrom + "\n");
+		whitelistWriter.write("!" + whitelistName + "\n");
+		whitelistWriter.write("$whitelist\n");
 
 		// insert whitelist
 		// insert the cards

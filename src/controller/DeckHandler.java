@@ -24,46 +24,6 @@ public class DeckHandler {
 	private DeckHandler() {
 	}
 
-	public static void generateDraftWhitelists() throws IOException {
-		generated = false;
-		try (Stream<Path> paths = Files.walk(draftFolder)) {
-			paths.filter(Files::isRegularFile).filter(path -> {
-				boolean whitelisted = true;
-				if (OptionsHandler.options.draftExporterFilter.get("whitelist").size() != 0) {
-					// Check if file is whitelisted
-					for (String s : OptionsHandler.options.draftExporterFilter.get("whitelist")) {
-						//
-						whitelisted = path.toString().contains(s);
-					}
-				}
-				// if the file is not in the non-empty whitelist return false
-				if (!whitelisted)
-					return false;
-				// If there was no whitelist or the file is whitelisted -> Check if file is
-				// blacklisted
-				for (String s : OptionsHandler.options.draftExporterFilter.get("blacklist")) {
-					if (path.toString().contains(s))
-						return false;
-				}
-				return true;
-			}).forEach(path -> {
-				try {
-					Path out = Paths.get(draftFolder + "\\" + OptionsHandler.options.draftExporterExtensions.get("prefix")
-							+ path.getFileName() + ".conf" + OptionsHandler.options.draftExporterExtensions.get("suffix"));
-					GraphicalConsole.add("Exported : " + path.toFile() + "\nas whitelist to\n" + out + "\n");
-					WhitelistGenerator.generateTo(out, DeckHandler.importFromFile(path), false);
-					generated = true;
-				} catch (Exception e) {
-					ErrorDialog ed = new ErrorDialog(e.getMessage());
-					ed.showDialog();
-				}
-			});
-			if (!generated)
-				GraphicalConsole.add("There was nothing to generate...");
-		}
-
-}
-
 	private static Stream<Path> getYdkPaths(Path dir) throws IOException {
 		return Files.walk(dir)
 				.filter(Files::isRegularFile)

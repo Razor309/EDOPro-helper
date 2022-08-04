@@ -3,8 +3,8 @@
     "apply banlist": true,
     "display infos": false,
     "draft exporter extensions": {
-        "prefix": "--",
-        "suffix": "--"
+        "prefix": "zzz-",
+        "suffix": ""
     },
     "draft exporter filter": {
         "generated decks": [
