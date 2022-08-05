@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 public class YGODeck extends HashMap<Integer, Integer> {
 	private final Path source;
-	public static final String MAIN = "#main", EXTRA = "#extra", SIDE = "!side";
 
 	/**
 	 * 

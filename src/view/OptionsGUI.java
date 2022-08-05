@@ -15,8 +15,7 @@ import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import controller.OptionsHandler;
-import model.Options;
+import controller.Options;
 
 public class OptionsGUI extends JFrame {
 	/**
@@ -37,12 +36,12 @@ public class OptionsGUI extends JFrame {
 				Double.MIN_VALUE };
 		contentPane.setLayout(gbl_contentPane);
 
-		JRadioButton displayInfosRadioButton = new JRadioButton("display infos", OptionsHandler.options.displayInfos);
+		JRadioButton displayInfosRadioButton = new JRadioButton("display infos", Options.optionsImpl.displayInfos);
 		displayInfosRadioButton.setHorizontalTextPosition(SwingConstants.LEFT);
 		displayInfosRadioButton.addActionListener(e -> {
-			OptionsHandler.options.displayInfos = !OptionsHandler.options.displayInfos;
+			Options.optionsImpl.displayInfos = !Options.optionsImpl.displayInfos;
 			try {
-				OptionsHandler.serializeOptions();
+				Options.serializeOptions();
 			} catch (IOException ex) {
 				new ErrorDialog(ex.getMessage()).showDialog();
 			}
@@ -53,12 +52,12 @@ public class OptionsGUI extends JFrame {
 		gbc_displayInfosRadioButton.gridy = 0;
 		contentPane.add(displayInfosRadioButton, gbc_displayInfosRadioButton);
 
-		JRadioButton applyBanlistRadioButton = new JRadioButton("apply banlist", OptionsHandler.options.applyBanlist);
+		JRadioButton applyBanlistRadioButton = new JRadioButton("apply banlist", Options.optionsImpl.applyBanlist);
 		applyBanlistRadioButton.setHorizontalTextPosition(SwingConstants.LEFT);
 		applyBanlistRadioButton.addActionListener(e -> {
-			OptionsHandler.options.applyBanlist = !OptionsHandler.options.applyBanlist;
+			Options.optionsImpl.applyBanlist = !Options.optionsImpl.applyBanlist;
 			try {
-				OptionsHandler.serializeOptions();
+				Options.serializeOptions();
 			} catch (IOException ex) {
 				new ErrorDialog(ex.getMessage()).showDialog();
 			}
@@ -83,7 +82,7 @@ public class OptionsGUI extends JFrame {
 		gbc_banlistLabel.gridy = 7;
 		contentPane.add(banlistLabel, gbc_banlistLabel);
 
-		JLabel banlistPathLabel = new JLabel(OptionsHandler.options.paths.get("banlist"));
+		JLabel banlistPathLabel = new JLabel(Options.optionsImpl.paths.get("banlist"));
 		GridBagConstraints gbc_banlistPathLabel = new GridBagConstraints();
 		gbc_banlistPathLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_banlistPathLabel.gridx = 1;
@@ -93,9 +92,9 @@ public class OptionsGUI extends JFrame {
 		JButton banlistChooseButton = new JButton("Choose");
 		banlistChooseButton.addActionListener(e -> {
 			try {
-				OptionsHandler.options.paths.put("banlist", Objects.requireNonNull(FileChooserWindow
-						.singleFilePick(new File(OptionsHandler.options.paths.get("banlist")))).getPath());
-				OptionsHandler.serializeOptions();
+				Options.optionsImpl.paths.put("banlist", Objects.requireNonNull(FileChooserWindow
+						.singleFilePick(new File(Options.optionsImpl.paths.get("banlist")))).getPath());
+				Options.serializeOptions();
 			} catch (IOException ioExc) {
 				ioExc.printStackTrace();
 				ErrorDialog ed = new ErrorDialog(ioExc.getMessage());
@@ -115,7 +114,7 @@ public class OptionsGUI extends JFrame {
 		gbc_goodcardsLabel.gridy = 8;
 		contentPane.add(goodcardsLabel, gbc_goodcardsLabel);
 
-		JLabel goodcardsPathLabel = new JLabel(OptionsHandler.options.paths.get("goodcards"));
+		JLabel goodcardsPathLabel = new JLabel(Options.optionsImpl.paths.get("goodcards"));
 		GridBagConstraints gbc_goodcardsPathLabel = new GridBagConstraints();
 		gbc_goodcardsPathLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_goodcardsPathLabel.gridx = 1;
@@ -125,9 +124,9 @@ public class OptionsGUI extends JFrame {
 		JButton goodcardsChooseButton = new JButton("Choose");
 		goodcardsChooseButton.addActionListener(e -> {
 			try {
-				OptionsHandler.options.paths.put("goodcards", Objects.requireNonNull(FileChooserWindow
-						.singleFilePick(new File(OptionsHandler.options.paths.get("goodcards")))).getPath());
-				OptionsHandler.serializeOptions();
+				Options.optionsImpl.paths.put("goodcards", Objects.requireNonNull(FileChooserWindow
+						.singleFilePick(new File(Options.optionsImpl.paths.get("goodcards")))).getPath());
+				Options.serializeOptions();
 			} catch (IOException ioExc) {
 				ioExc.printStackTrace();
 				ErrorDialog ed = new ErrorDialog(ioExc.getMessage());
@@ -147,7 +146,7 @@ public class OptionsGUI extends JFrame {
 		gbc_whitelistFolderLabel.gridy = 9;
 		contentPane.add(whitelistFolderLabel, gbc_whitelistFolderLabel);
 
-		JLabel whitelistFolderPathLabel = new JLabel(OptionsHandler.options.paths.get("whitelist folder"));
+		JLabel whitelistFolderPathLabel = new JLabel(Options.optionsImpl.paths.get("whitelist folder"));
 		GridBagConstraints gbc_whitelistFolderPathLabel = new GridBagConstraints();
 		gbc_whitelistFolderPathLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_whitelistFolderPathLabel.gridx = 1;
@@ -157,9 +156,9 @@ public class OptionsGUI extends JFrame {
 		JButton whitelistFolderChooseButton = new JButton("Choose");
 		whitelistFolderChooseButton.addActionListener(e -> {
 			try {
-				OptionsHandler.options.paths.put("whitelist folder", Objects.requireNonNull(FileChooserWindow
-						.singleFolderPick(new File(OptionsHandler.options.paths.get("whitelist folder")))).getPath());
-				OptionsHandler.serializeOptions();
+				Options.optionsImpl.paths.put("whitelist folder", Objects.requireNonNull(FileChooserWindow
+						.singleFolderPick(new File(Options.optionsImpl.paths.get("whitelist folder")))).getPath());
+				Options.serializeOptions();
 			} catch (IOException ioExc) {
 				ioExc.printStackTrace();
 				ErrorDialog ed = new ErrorDialog(ioExc.getMessage());
@@ -179,7 +178,7 @@ public class OptionsGUI extends JFrame {
 		gbc_draftFolderLabel.gridy = 10;
 		contentPane.add(draftFolderLabel, gbc_draftFolderLabel);
 
-		JLabel draftFolderPathLabel = new JLabel(OptionsHandler.options.paths.get("draft folder"));
+		JLabel draftFolderPathLabel = new JLabel(Options.optionsImpl.paths.get("draft folder"));
 		GridBagConstraints gbc_draftFolderPathLabel = new GridBagConstraints();
 		gbc_draftFolderPathLabel.insets = new Insets(0, 0, 0, 5);
 		gbc_draftFolderPathLabel.gridx = 1;
@@ -189,8 +188,8 @@ public class OptionsGUI extends JFrame {
 		JButton draftFolderChooseButton = new JButton("Choose");
 		draftFolderChooseButton.addActionListener(e -> {
 			try {
-				OptionsHandler.options.paths.put("draft folder", FileChooserWindow.singleFolderPick().getPath());
-				OptionsHandler.serializeOptions();
+				Options.optionsImpl.paths.put("draft folder", FileChooserWindow.singleFolderPick().getPath());
+				Options.serializeOptions();
 			} catch (IOException ioExc) {
 				ioExc.printStackTrace();
 				ErrorDialog ed = new ErrorDialog(ioExc.getMessage());

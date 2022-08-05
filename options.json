@@ -1,31 +1,34 @@
 
 {
     "apply banlist": true,
-    "display infos": false,
-    "draft exporter extensions": {
-        "prefix": "zzz-",
+    "display infos": true,
+    "draft-amount of formats for drafts whitelist generation": 2,
+    "draft-delete old drafts before generating new ones": true,
+    "draft-exporter extensions": {
+        "prefix": "Z-",
         "suffix": ""
     },
-    "draft exporter filter": {
-        "generated decks": [
-        ],
-        "generated whitelists": [
-        ],
+    "import filter": {
         "blacklist": [
             "Structure",
             "Starter"
         ],
         "whitelist": [
-            "Draft"
         ]
     },
-    "general whitelist name": "general.conf",
-    "goodcards whitelist name": "goodcards.conf",
+    "name of export banlist for edopro": "banlist.conf",
+    "name of export banlist for edopro trimmed": "banlist trimmed.conf",
+    "name of general whitelist": "general.conf",
+    "name of goodcards whitelist": "goodcards.conf",
+    "name of trimmed goodcards whitelist": "trimmed goodcards.conf",
     "paths": {
-        "goodcards": "C:\\Users\\damoe\\OneDrive - bwedu\\Yugioh Helper\\resources\\goodcards.ydk",
+        "goodcards": "C:\\Users\\damoe\\OneDrive\\Shared\\Yu-Gi-Oh\\Good Cards.ydk",
         "banlist": "C:\\Users\\damoe\\OneDrive\\Shared\\Yu-Gi-Oh\\Banlist.txt",
         "whitelist folder": "C:\\Program Files\\ProjectIgnis\\lflists\\",
-        "draft folder": "C:\\Users\\damoe\\OneDrive - bwedu\\Yugioh Helper\\resources\\drafts"
+        "draft folder": "C:\\Users\\damoe\\OneDrive - bwedu\\EDOPro Helper\\resources\\drafts"
     },
-    "trimmed goodcards whitelist name": "trimmed goodcards.conf"
+    "zzz ignore generated draft whitelists": [
+        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-20 Draft.conf",
+        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-19 Draft.conf"
+    ]
 }

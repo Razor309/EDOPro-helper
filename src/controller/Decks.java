@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -12,22 +13,21 @@ import java.util.stream.Stream;
 
 import model.YGODeck;
 import view.ErrorDialog;
-import view.GraphicalConsole;
 
-public class DeckHandler {
-	public final static Path draftFolder = Paths.get(OptionsHandler.options.paths.get("draft folder"));
-	public final static Path goodcardsPath = Paths.get(OptionsHandler.options.paths.get("goodcards"));
+public class Decks {
+	public final static Path DRAFT_FOLDER = Paths.get(Options.optionsImpl.paths.get("draft folder"));
+	public final static Path GOODCARDS_PATH = Paths.get(Options.optionsImpl.paths.get("goodcards"));
 	private static YGODeck allcardsDeck;
 	private static YGODeck goodcardsDeck;
-	private static boolean generated;
 
-	private DeckHandler() {
+	private Decks() {
 	}
 
 	private static Stream<Path> getYdkPaths(Path dir) throws IOException {
 		return Files.walk(dir)
 				.filter(Files::isRegularFile)
-				.filter(path -> path.toString().startsWith(".ydk", path.toString().length() - 4));
+				.filter(path -> path.toString().startsWith(".ydk", path.toString().length() - 4))
+				.filter(Iflists::applyWhiteAndBlacklist);
 	}
 
 	private static Stream<Integer> getCardCodes(Stream<String> lines){
@@ -45,15 +45,31 @@ public class DeckHandler {
 		return YGODeck.getCastedInstance((HashMap<Integer, Integer>) map);
 	}
 
+	public static YGODeck getIntersectingDeck(HashSet<Integer> banlist, YGODeck deck) {
+		HashMap<Integer, Integer> map = new HashMap<>();
+		banlist.stream().filter(deck::containsKey).forEach(cardid -> {
+			map.put(cardid, 1);
+		});
+		return YGODeck.getCastedInstance(map);
+	}
+
+	public static YGODeck getLeftKeyRightValue(YGODeck d1, YGODeck d2) {
+		Map<Integer, Integer> map = d1.keySet().stream().collect(Collectors.toMap(k -> k, k -> {
+			if (d2.containsKey(k)) return d2.get(k);
+			return 0;
+		}));
+		return YGODeck.getCastedInstance((HashMap<Integer, Integer>) map);
+	}
+
 	public static YGODeck getAllcardsDeck() throws IOException {
 		if (allcardsDeck == null)
-			allcardsDeck = importFromDir(draftFolder);
+			allcardsDeck = importFromDir(DRAFT_FOLDER);
 		return allcardsDeck;
 	}
 
 	public static YGODeck getGoodcardsDeck() throws IOException {
 		if (goodcardsDeck == null)
-			goodcardsDeck = importFromFile(goodcardsPath);
+			goodcardsDeck = importFromFile(GOODCARDS_PATH);
 		return goodcardsDeck;
 	}
 
@@ -66,7 +82,6 @@ public class DeckHandler {
 		}
 		assert ydkPathStream != null;
 		ydkPathStream.forEach(path -> {
-			
 			try {
 				getCardCodes(Files.lines(path))
 						.forEach(cardCode -> {
