@@ -53,21 +53,27 @@ public class Iflists {
         if (Options.optionsImpl.deleteOldDrafts) deleteDraftWhitelists();
         AtomicBoolean generated = new AtomicBoolean(false);
         HashSet<String> generatedWhitelists = Options.optionsImpl.generatedDraftWhitlists;
-        HashMap<Long, Path> allLastModifications = new HashMap<>();
+        HashMap<Long, Path> lastModifiedMap = new HashMap<>();
         AtomicInteger counter = new AtomicInteger();
         int filequantity = Options.optionsImpl.draftExportQuantity;
         try (Stream<Path> paths = Files.walk(DRAFT_FOLDER)) {
             paths.filter(Files::isRegularFile)
                     .filter(Iflists::applyWhiteAndBlacklist)
-                    .forEach(path -> allLastModifications.put(path.toFile().lastModified(), path));
-            allLastModifications.keySet().stream().sorted().forEach(key -> {
+                    .forEach(path -> lastModifiedMap.put(path.toFile().lastModified(), path));
+            lastModifiedMap.keySet().stream().sorted().forEach(key -> {
                 counter.getAndIncrement();
-                if (counter.get() > allLastModifications.keySet().size() - ((filequantity == -1) ? allLastModifications.keySet().size() : filequantity)) {
+                if (counter.get() > lastModifiedMap.keySet().size() - ((filequantity == -1) ? lastModifiedMap.keySet().size() : filequantity)) {
                     try {
                         String whitelistName = Options.optionsImpl.draftExporterExtensions.get("prefix")
-                                + allLastModifications.get(key).getFileName().toString().split("\\.")[0] + Options.optionsImpl.draftExporterExtensions.get("suffix");
+                                + lastModifiedMap.get(key).getFileName().toString().split("\\.")[0] + Options.optionsImpl.draftExporterExtensions.get("suffix");
                         Path out = Paths.get(WHITELIST_FOLDER + "\\" + whitelistName + ".conf");
-                        Iflists.generateTo(out, Decks.importFromFile(allLastModifications.get(key)), false, true, out.toString(), whitelistName);
+                        Iflists.generateTo(
+                                out,
+                                Decks.importFromFile(lastModifiedMap.get(key)),
+                                false,
+                                false,
+                                out.toString(),
+                                whitelistName);
                         generated.set(true);
                         generatedWhitelists.add(out.toString());
                     } catch (Exception e) {
@@ -152,13 +158,13 @@ public class Iflists {
         Options.serializeOptions();
     }
 
-    public static void generateTo(Path out, YGODeck deck, boolean withBanlist, boolean banlistVisible) throws IOException {
+    public static void generateTo(Path out, YGODeck deck, boolean withBanlist, boolean banlistCardsVisible) throws IOException {
         String convertedFrom = deck.getSource() != null ? deck.getSource().toAbsolutePath().toString() : "unknown";
         String whitelistName = out.getFileName().toString().substring(0, out.getFileName().toString().length() - 5);
-        generateTo(out, deck, withBanlist, banlistVisible, convertedFrom, whitelistName);
+        generateTo(out, deck, withBanlist, banlistCardsVisible, convertedFrom, whitelistName);
     }
 
-    public static void generateTo(Path out, YGODeck deck, boolean withBanlist, boolean banlistVisible, String convertedFrom, String whitelistName) throws IOException {
+    public static void generateTo(Path out, YGODeck deck, boolean withBanlist, boolean banlistCardsVisible, String convertedFrom, String whitelistName) throws IOException {
         BufferedWriter whitelistWriter = Files.newBufferedWriter(out);
         whitelistWriter.write("Whitelist converted from: " + convertedFrom + "\n");
         whitelistWriter.write("!" + whitelistName + "\n");
@@ -170,7 +176,7 @@ public class Iflists {
             whitelistWriter.write("" + key + " " + (deck.get(key) >= 3 ? 3 : deck.get(key)) + "\n");
 
         if (withBanlist) {
-            writeBanlist(whitelistWriter, banlistVisible);
+            writeBanlist(whitelistWriter, banlistCardsVisible);
         }
 
         GraphicalConsole.add("Generated whitelist: " + out);
