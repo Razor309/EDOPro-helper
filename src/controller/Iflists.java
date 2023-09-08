@@ -17,6 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static controller.Decks.DRAFT_FOLDER;
+import static controller.Decks.getGoodcardsDeck;
 
 public class Iflists {
     private static final String WHITELIST_FOLDER = Options.optionsImpl.paths.get("whitelist folder");
@@ -66,16 +67,27 @@ public class Iflists {
                     try {
                         String whitelistName = Options.optionsImpl.draftExporterExtensions.get("prefix")
                                 + lastModifiedMap.get(key).getFileName().toString().split("\\.")[0] + Options.optionsImpl.draftExporterExtensions.get("suffix");
-                        Path out = Paths.get(WHITELIST_FOLDER + "\\" + whitelistName + ".conf");
+                        String draftGoodcardsName = Options.optionsImpl.draftExporterExtensions.get("prefix") + "gc_" + whitelistName + Options.optionsImpl.draftExporterExtensions.get("suffix");
+                        Path normalOut = Paths.get(WHITELIST_FOLDER + "\\" + whitelistName + ".conf");
+                        Path goodcardOut = Paths.get(WHITELIST_FOLDER + "\\" + draftGoodcardsName + ".conf");
+                        YGODeck draftDeck = Decks.importFromFile(lastModifiedMap.get(key));
                         Iflists.generateTo(
-                                out,
-                                Decks.importFromFile(lastModifiedMap.get(key)),
+                                normalOut,
+                                draftDeck,
                                 false,
                                 false,
-                                out.toString(),
+                                normalOut.toString(),
                                 whitelistName);
+                        Iflists.generateTo(
+                                goodcardOut,
+                                Decks.getIntersectingDeck(getGoodcardsDeck(), draftDeck),
+                                Options.optionsImpl.applyBanlistGCDraft,
+                                Options.optionsImpl.banlistVisibleGCDraft,
+                                goodcardOut.toString(),
+                                draftGoodcardsName);
                         generated.set(true);
-                        generatedWhitelists.add(out.toString());
+                        generatedWhitelists.add(normalOut.toString());
+                        generatedWhitelists.add(goodcardOut.toString());
                     } catch (Exception e) {
                         ErrorDialog ed = new ErrorDialog(e.getMessage());
                         ed.showDialog();

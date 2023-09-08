@@ -27,8 +27,14 @@
         "whitelist folder": "C:\\Program Files\\ProjectIgnis\\lflists\\",
         "draft folder": "C:\\Users\\damoe\\OneDrive - bwedu\\EDOPro Helper\\resources\\drafts"
     },
+    "banlist visible for goodcard draft": false,
+    "apply banlist for goodcard draft":  false,
     "zzz ignore generated draft whitelists": [
+        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-gc_Z-59 Draft.conf",
         "C:\\Program Files\\ProjectIgnis\\lflists\\Z-20 Draft.conf",
-        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-19 Draft.conf"
+        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-59 Promo Cards.conf",
+        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-gc_Z-59 Promo Cards.conf",
+        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-19 Draft.conf",
+        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-59 Draft.conf"
     ]
 }

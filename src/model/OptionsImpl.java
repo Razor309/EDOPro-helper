@@ -46,4 +46,10 @@ public class OptionsImpl {
 
     @JsonbProperty("import filter")
     public HashMap<String, HashSet<String>> importFilter;
+
+    @JsonbProperty("apply banlist for goodcard draft")
+    public boolean applyBanlistGCDraft;
+
+    @JsonbProperty("banlist visible for goodcard draft")
+    public boolean banlistVisibleGCDraft;
 }
