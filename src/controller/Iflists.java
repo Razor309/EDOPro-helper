@@ -16,8 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
-import static controller.Decks.DRAFT_FOLDER;
-import static controller.Decks.getGoodcardsDeck;
+import static controller.Decks.*;
 
 public class Iflists {
     private static final String WHITELIST_FOLDER = Options.optionsImpl.paths.get("whitelist folder");
@@ -29,7 +28,7 @@ public class Iflists {
     public static void generateGeneral() throws IOException {
         generateTo(
                 Paths.get(WHITELIST_FOLDER + Options.optionsImpl.generalWhitelistName),
-                Decks.getAllcardsDeck(),
+                getAllcardsDeck(),
                 Options.optionsImpl.applyBanlist,
                 false);
     }
@@ -37,7 +36,7 @@ public class Iflists {
     public static void generateGoodcards() throws IOException {
         generateTo(
                 Paths.get(WHITELIST_FOLDER + Options.optionsImpl.goodcardsWhitelistName),
-                Decks.getLeftKeyRightValue(Decks.getGoodcardsDeck(), Decks.getAllcardsDeck()),
+                Decks.getLeftKeyRightValue(getGoodcardsDeck(), getAllcardsDeck()),
                 Options.optionsImpl.applyBanlist,
                 true);
     }
@@ -45,7 +44,7 @@ public class Iflists {
     public static void generateTrimmedGoodcards() throws IOException {
         generateTo(
                 Paths.get(WHITELIST_FOLDER + Options.optionsImpl.trimmedGoodcardsWhitelistName),
-                Decks.getIntersectingDeck(Decks.getGoodcardsDeck(), Decks.getAllcardsDeck()),
+                getIntersectingDeck(getGoodcardsDeck(), getAllcardsDeck()),
                 Options.optionsImpl.applyBanlist,
                 false);
     }
@@ -80,7 +79,7 @@ public class Iflists {
                                 whitelistName);
                         Iflists.generateTo(
                                 goodcardOut,
-                                Decks.getIntersectingDeck(getGoodcardsDeck(), draftDeck),
+                                Decks.getLeftKeyRightValue(getIntersectingDeck(getGoodcardsDeck(), draftDeck), getAllcardsDeck()),
                                 Options.optionsImpl.applyBanlistGCDraft,
                                 Options.optionsImpl.banlistVisibleGCDraft,
                                 goodcardOut.toString(),
@@ -122,7 +121,7 @@ public class Iflists {
     public static void generateBanlistWhitelistTrimmed() throws IOException {
         generateTo(
                 Paths.get(WHITELIST_FOLDER + Options.optionsImpl.exportBanlistTrimmedName),
-                Decks.getIntersectingDeck(get(Paths.get(Options.optionsImpl.paths.get("banlist"))), Decks.getAllcardsDeck()),
+                getIntersectingDeck(get(Paths.get(Options.optionsImpl.paths.get("banlist"))), getAllcardsDeck()),
                 false,
                 false
         );

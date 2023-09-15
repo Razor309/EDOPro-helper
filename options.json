@@ -1,6 +1,8 @@
 
 {
     "apply banlist": true,
+    "apply banlist for goodcard draft": false,
+    "banlist visible for goodcard draft": false,
     "display infos": true,
     "draft-amount of formats for drafts whitelist generation": 2,
     "draft-delete old drafts before generating new ones": true,
@@ -16,25 +18,21 @@
         "whitelist": [
         ]
     },
-    "name of export banlist for edopro": "banlist.conf",
-    "name of export banlist for edopro trimmed": "banlist trimmed.conf",
-    "name of general whitelist": "general.conf",
-    "name of goodcards whitelist": "goodcards.conf",
-    "name of trimmed goodcards whitelist": "trimmed goodcards.conf",
+    "name of export banlist for edopro": "5. Banlist.conf",
+    "name of export banlist for edopro trimmed": "4. Banlist trimmed.conf",
+    "name of general whitelist": "1. General.conf",
+    "name of goodcards whitelist": "3. Goodcards.conf",
+    "name of trimmed goodcards whitelist": "2. Trimmed goodcards.conf",
     "paths": {
         "goodcards": "C:\\Users\\damoe\\OneDrive\\Shared\\Yu-Gi-Oh\\Good Cards.ydk",
         "banlist": "C:\\Users\\damoe\\OneDrive\\Shared\\Yu-Gi-Oh\\Banlist.txt",
         "whitelist folder": "C:\\Program Files\\ProjectIgnis\\lflists\\",
         "draft folder": "C:\\Users\\damoe\\OneDrive - bwedu\\EDOPro Helper\\resources\\drafts"
     },
-    "banlist visible for goodcard draft": false,
-    "apply banlist for goodcard draft":  false,
     "zzz ignore generated draft whitelists": [
-        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-gc_Z-59 Draft.conf",
-        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-20 Draft.conf",
-        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-59 Promo Cards.conf",
-        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-gc_Z-59 Promo Cards.conf",
-        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-19 Draft.conf",
-        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-59 Draft.conf"
+        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-60 Promo Cards.conf",
+        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-60 Draft.conf",
+        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-gc_Z-60 Promo Cards.conf",
+        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-gc_Z-60 Draft.conf"
     ]
 }
