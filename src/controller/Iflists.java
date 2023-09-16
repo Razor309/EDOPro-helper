@@ -64,29 +64,29 @@ public class Iflists {
                 counter.getAndIncrement();
                 if (counter.get() > lastModifiedMap.keySet().size() - ((filequantity == -1) ? lastModifiedMap.keySet().size() : filequantity)) {
                     try {
-                        String whitelistName = Options.optionsImpl.draftExporterExtensions.get("prefix")
-                                + lastModifiedMap.get(key).getFileName().toString().split("\\.")[0] + Options.optionsImpl.draftExporterExtensions.get("suffix");
-                        String draftGoodcardsName = Options.optionsImpl.draftExporterExtensions.get("prefix") + "gc_" + whitelistName + Options.optionsImpl.draftExporterExtensions.get("suffix");
-                        Path normalOut = Paths.get(WHITELIST_FOLDER + "\\" + whitelistName + ".conf");
-                        Path goodcardOut = Paths.get(WHITELIST_FOLDER + "\\" + draftGoodcardsName + ".conf");
+                        String filename = lastModifiedMap.get(key).getFileName().toString().split("\\.")[0];
+                        String draftName = Options.optionsImpl.draftExporterExtensions.get("prefix") + filename + Options.optionsImpl.draftExporterExtensions.get("suffix");
+                        Path draftOut = Paths.get(WHITELIST_FOLDER + "\\" + draftName + ".conf");
                         YGODeck draftDeck = Decks.importFromFile(lastModifiedMap.get(key));
                         Iflists.generateTo(
-                                normalOut,
+                                draftOut,
                                 draftDeck,
                                 false,
                                 false,
-                                normalOut.toString(),
-                                whitelistName);
+                                draftOut.toString(),
+                                draftName);
+                        generatedWhitelists.add(draftOut.toString());
+                        String draftGoodcardsName = Options.optionsImpl.draftGoodcardsExporterExtensions.get("prefix") + filename + Options.optionsImpl.draftGoodcardsExporterExtensions.get("suffix");
+                        Path draftGoodcardOut = Paths.get(WHITELIST_FOLDER + "\\" + draftGoodcardsName + ".conf");
                         Iflists.generateTo(
-                                goodcardOut,
+                                draftGoodcardOut,
                                 Decks.getLeftKeyRightValue(getIntersectingDeck(getGoodcardsDeck(), draftDeck), getAllcardsDeck()),
                                 Options.optionsImpl.applyBanlistGCDraft,
                                 Options.optionsImpl.banlistVisibleGCDraft,
-                                goodcardOut.toString(),
+                                draftGoodcardOut.toString(),
                                 draftGoodcardsName);
+                        generatedWhitelists.add(draftGoodcardOut.toString());
                         generated.set(true);
-                        generatedWhitelists.add(normalOut.toString());
-                        generatedWhitelists.add(goodcardOut.toString());
                     } catch (Exception e) {
                         ErrorDialog ed = new ErrorDialog(e.getMessage());
                         ed.showDialog();
@@ -201,14 +201,13 @@ public class Iflists {
         Files.newBufferedReader(Paths.get(Options.optionsImpl.paths.get("banlist")))
                 .lines()
                 .forEach(line -> {
-                    AtomicBoolean firstLine = new AtomicBoolean(true);
-                    Arrays.stream(line.split(" ")).forEach(subline -> {
+                    AtomicInteger counter = new AtomicInteger();
+                    Arrays.stream(line.split(" ")).forEach(substring -> {
                         try {
-                            if (firstLine.get()) {
+                            if (counter.getAndIncrement() == 1)
                                 writer.write(cardQuantity + " ");
-                                firstLine.set(false);
-                            } else
-                                writer.write(subline + " ");
+                            else
+                                writer.write(substring + " ");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

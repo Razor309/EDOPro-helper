@@ -20,6 +20,9 @@ public class OptionsImpl {
     @JsonbProperty("draft-exporter extensions")
     public HashMap<String, String> draftExporterExtensions;
 
+    @JsonbProperty("draft-goodcards-exporter extensions")
+    public HashMap<String, String> draftGoodcardsExporterExtensions;
+
     @JsonbProperty("zzz ignore generated draft whitelists")
     public HashSet<String> generatedDraftWhitlists;
 

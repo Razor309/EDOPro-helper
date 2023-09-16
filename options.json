@@ -1,14 +1,18 @@
 
 {
     "apply banlist": true,
-    "apply banlist for goodcard draft": false,
+    "apply banlist for goodcard draft": true,
     "banlist visible for goodcard draft": false,
     "display infos": true,
     "draft-amount of formats for drafts whitelist generation": 2,
     "draft-delete old drafts before generating new ones": true,
     "draft-exporter extensions": {
-        "prefix": "Z-",
-        "suffix": ""
+        "prefix": "ZZdraft[",
+        "suffix": "]"
+    },
+    "draft-goodcards-exporter extensions": {
+        "prefix": "Zgoodcards[",
+        "suffix": "]"
     },
     "import filter": {
         "blacklist": [
@@ -30,9 +34,9 @@
         "draft folder": "C:\\Users\\damoe\\OneDrive - bwedu\\EDOPro Helper\\resources\\drafts"
     },
     "zzz ignore generated draft whitelists": [
-        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-60 Promo Cards.conf",
-        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-60 Draft.conf",
-        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-gc_Z-60 Promo Cards.conf",
-        "C:\\Program Files\\ProjectIgnis\\lflists\\Z-gc_Z-60 Draft.conf"
+        "C:\\Program Files\\ProjectIgnis\\lflists\\ZZdraft[60 Draft].conf",
+        "C:\\Program Files\\ProjectIgnis\\lflists\\ZZdraft[60 Promo Cards].conf",
+        "C:\\Program Files\\ProjectIgnis\\lflists\\Zgoodcards[60 Draft].conf",
+        "C:\\Program Files\\ProjectIgnis\\lflists\\Zgoodcards[60 Promo Cards].conf"
     ]
 }
